@@ -21,5 +21,6 @@
     "omnisharp.enableRoslynAnalyzers": true,
     "omnisharp.useModernNet": true,
     "omnisharp.enableImportCompletion": true,
-    "omnisharp.organizeImportsOnFormat": true
+    "omnisharp.organizeImportsOnFormat": true,
+    "C_Cpp.errorSquiggles": "disabled"
 }
