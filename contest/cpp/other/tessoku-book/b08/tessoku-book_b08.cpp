@@ -1,117 +1,38 @@
-#pragma GCC optimize("Ofast")
-
-#include <algorithm>
-#include <climits>
-#include <cmath>
-#include <cstdio>
-#include <functional>
 #include <iostream>
-#include <iterator>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <stack>
-#include <string>
-#include <vector>
-
 using namespace std;
-
-#define ll long long
-#define vec vector<int>
-#define vecd vector<double>
-#define vecll vector<ll>
-#define Graph vector<vector<int>>
-#define wGraph vector<vector<Edge>>
-
-#define rep(i, n) for (int i = 0; i < (int)(n); i++)
-/* rep(i, n) {
-        cout << i;
-  }
-*/
-/* for (auto& x: X) {
-        cin >> x;
-    }
-*/
-
-#define krep(i, k, n) for (int i = k; i < (int)(n); i++)
-
-#define prep(i, n) for (int i = 1; i <= (int)(n); i++)
-
-#define irep(i, n) for (int i = (int)n - 1; i >= 0; i--)
-
-#define all(v) v.begin(), v.end()
-/*
-  vector<int> v = {2, 3, 1}
-  sort(all(v))
-*/
-
-#define INF INT_MAX
-#define LINF LLONG_MAX
-
-const int dx[4] = {1, 0, -1, 0};
-const int dy[4] = {0, 1, 0, -1};
-
-vec pow_vec{1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
-
-vecll pow_vecll{1,        10,        100,        1000,        10000,        100000,       1000000,
-                10000000, 100000000, 1000000000, 10000000000, 100000000000, 1000000000000};
-
-void print_vec(vec v) {
-    rep(i, (int)v.size()) {
-        cout << v.at(i);
-    }
-    cout << endl;
-}
-
-void print_vecll(vecll v) {
-    rep(i, (int)v.size()) {
-        cout << v.at(i);
-    }
-    cout << endl;
-}
-
-vec string_to_vec(string s) {
-    vec v(s.size());
-    rep(i, (int)s.size()) {
-        v.at(i) = s.at(i) - '0';
-    }
-    return v;
-}
-
-char int_to_alphabet(int i) {
-    // i = 0 -> a
-    // i = 25 -> z
-    return i + 'a';
-}
-
-int alphabet_to_int(char s) {
-    return s - 'a';
-}
-
-int mmod(int a, int b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
-}
-
-ll mmod(ll a, ll b) {
-    a += (abs(a / b) + 1) * b;
-    return a % b;
-}
-
-bool s_contain(string s, char c) {
-    if (s.find(c) != string::npos) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
+ 
+// 入力で与えられる変数
+int N, X[100009], Y[100009];
+int Q, A[100009], B[100009], C[100009], D[100009];
+ 
+// 各座標にある点の数 S[i][j]、二次元累積和 T[i][j]
+int S[1509][1509];
+int T[1509][1509];
+ 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    // ----------------------------------------------------------------
-
-    // ----------------------------------------------------------------
-    return 0;
+	// 入力
+	cin >> N;
+	for (int i = 1; i <= N; i++) cin >> X[i] >> Y[i];
+	cin >> Q;
+	for (int i = 1; i <= Q; i++) cin >> A[i] >> B[i] >> C[i] >> D[i];
+ 
+	// 各座標にある点の数を数える
+	for (int i = 1; i <= N; i++) S[X[i]][Y[i]] += 1;
+ 
+	// 累積和をとる
+	for (int i = 0; i <= 1500; i++) {
+		for (int j = 0; j <= 1500; j++) T[i][j] = 0;
+	}
+	for (int i = 1; i <= 1500; i++) {
+		for (int j = 1; j <= 1500; j++) T[i][j] = T[i][j - 1] + S[i][j];
+	}
+	for (int i = 1; i <= 1500; i++) {
+		for (int j = 1; j <= 1500; j++) T[i][j] = T[i - 1][j] + T[i][j];
+	}
+ 
+	// 答えを求める
+	for (int i = 1; i <= Q; i++) {
+		cout << T[C[i]][D[i]] + T[A[i] - 1][B[i] - 1] - T[A[i] - 1][D[i]] - T[C[i]][B[i] - 1] << endl;
+	}
+	return 0;
 }
